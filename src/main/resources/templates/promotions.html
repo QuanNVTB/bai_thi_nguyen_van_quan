@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách khuyến mãi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        a.add-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a.add-btn:hover {
+            background-color: #218838;
+        }
+
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        form input, form button {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        form button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #0069d9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        td a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 13px;
+        }
+
+        td a.edit-btn {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        td a.edit-btn:hover {
+            background-color: #e0a800;
+        }
+
+        td a.delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        td a.delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<h1>Danh sách khuyến mãi</h1>
+
+<a th:href="@{/promotions/add}" class="add-btn">Thêm khuyến mãi</a>
+
+<form method="get" th:action="@{/promotions}">
+    Mức giảm giá: <input type="number" name="discount" placeholder="VD: 50000"/>
+    Từ ngày: <input type="date" name="startDate"/>
+    Đến ngày: <input type="date" name="endDate"/>
+    <button type="submit">Tìm kiếm</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>Tiêu đề</th>
+        <th>Thời gian bắt đầu</th>
+        <th>Thời gian kết thúc</th>
+        <th>Mức giảm giá</th>
+        <th>Chi tiết</th>
+        <th>Chức năng</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="promo : ${promotions}">
+        <td th:text="${promo.title}"></td>
+        <td th:text="${promo.startDate}"></td>
+        <td th:text="${promo.endDate}"></td>
+        <td th:text="${promo.discount}"></td>
+        <td th:text="${promo.detail}"></td>
+        <td>
+            <a th:href="@{'/promotions/edit/' + ${promo.id}}" class="edit-btn">Sửa</a>
+            <a th:href="@{'/promotions/delete/' + ${promo.id}}"
+               class="delete-btn"
+               th:attr="data-title=${promo.title}"
+               onclick="return confirmDelete(this)">
+                Xóa
+            </a>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    function confirmDelete(el) {
+        const title = el.getAttribute('data-title');
+        return confirm('Bạn có muốn xóa Chương trình khuyến mãi "' + title + '" không?');
+    }
+</script>
+</body>
+</html>

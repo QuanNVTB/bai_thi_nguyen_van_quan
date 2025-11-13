@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm khuyến mãi</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    form p {
+      margin-bottom: 15px;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    span[th\\:errors] {
+      color: red;
+      font-size: 13px;
+    }
+
+    span[th\\:text] {
+      color: red;
+      font-size: 13px;
+      display: block;
+      margin-top: 5px;
+    }
+
+    button[type="submit"] {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #218838;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 15px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<h1>Thêm khuyến mãi</h1>
+<form th:action="@{/promotions/add}" th:object="${promotion}" method="post">
+  <p>
+    <label>Tiêu đề:</label>
+    <input type="text" th:field="*{title}"/>
+    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+  </p>
+
+  <p>
+    <label>Thời gian bắt đầu:</label>
+    <input type="date" th:field="*{startDate}"/>
+    <span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
+  </p>
+
+  <p>
+    <label>Thời gian kết thúc:</label>
+    <input type="date" th:field="*{endDate}"/>
+    <span th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></span>
+    <span th:text="${dateError}"></span>
+  </p>
+
+  <p>
+    <label>Mức giảm giá:</label>
+    <input type="number" th:field="*{discount}"/>
+    <span th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"></span>
+  </p>
+
+  <p>
+    <label>Chi tiết:</label>
+    <textarea th:field="*{detail}"></textarea>
+    <span th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}"></span>
+  </p>
+
+  <!-- Nút Thêm -->
+  <button type="submit" class="btn btn-primary" onclick="document.getElementById('promoForm').submit();">
+    Thêm
+  </button>
+
+  <!-- Nút Quay lại -->
+  <button type="button" class="btn btn-primary" th:onclick="|window.location='@{/promotions}'|">
+    Quay lại
+  </button>
+</form>
+
+</body>
+</html>
